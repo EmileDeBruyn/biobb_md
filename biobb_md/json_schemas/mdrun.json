@@ -238,7 +238,13 @@
                     "max": 1000,
                     "step": 1
                 },
-                "use_gpu": {
+                "nb_gpu": {
+                    "type": "boolean",
+                    "default": false,
+                    "wf_prop": false,
+                    "description": "Use settings appropriate for GPU. Adds: -nb gpu -pme gpu"
+                },
+                "pme_gpu": {
                     "type": "boolean",
                     "default": false,
                     "wf_prop": false,

@@ -326,11 +326,17 @@
                     "wf_prop": true,
                     "description": "Let GROMACS guess. The number of GROMACS OPENMP_PME threads that are going to be used."
                 },
-                "use_gpu": {
+                "nb_gpu": {
                     "type": "boolean",
                     "default": false,
                     "wf_prop": false,
-                    "description": "Use settings appropriate for GPU. Adds: -nb gpu -pme gpu"
+                    "description": "Use settings appropriate for GPU. Adds: -nb gpu"
+                },
+                "pme_gpu": {
+                    "type": "boolean",
+                    "default": false,
+                    "wf_prop": false,
+                    "description": "Use settings appropriate for GPU. Adds: -pme gpu"
                 },
                 "gpu_id": {
                     "type": "string",

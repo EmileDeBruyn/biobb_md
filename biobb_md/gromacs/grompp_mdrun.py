@@ -42,7 +42,7 @@ class GromppMdrun(BiobbObject):
             * **num_threads_mpi** (*int*) - (0) [0-1000|1] Let GROMACS guess. The number of GROMACS MPI threads that are going to be used.
             * **num_threads_omp** (*int*) - (0) [0-1000|1] Let GROMACS guess. The number of GROMACS OPENMP threads that are going to be used.
             * **num_threads_omp_pme** (*int*) - (0) [0-1000|1] Let GROMACS guess. The number of GROMACS OPENMP_PME threads that are going to be used.
-            * **use_gpu** (*bool*) - (False) Use settings appropriate for GPU. Adds: -nb gpu -pme gpu
+            * **nb_gpu** (*bool*) - (False) Use settings appropriate for GPU. Adds: -nb gpu -pme gpu
             * **gpu_id** (*str*) - (None) List of unique GPU device IDs available to use.
             * **gpu_tasks** (*str*) - (None) List of GPU device IDs, mapping each PP task on each node to a device.
             * **gmx_lib** (*str*) - (None) Path set GROMACS GMXLIB environment variable.
@@ -97,7 +97,7 @@ class GromppMdrun(BiobbObject):
         super().__init__(properties)
 
         grompp_properties_keys = ['mdp', 'maxwarn', 'simulation_type']
-        mdrun_properties_keys = ['mpi_bin', 'mpi_np', 'mpi_hostlist', 'checkpoint_time', 'num_threads', 'num_threads_mpi', 'num_threads_omp', 'num_threads_omp_pme', 'use_gpu', 'gpu_id', 'gpu_tasks', 'dev']
+        mdrun_properties_keys = ['mpi_bin', 'mpi_np', 'mpi_hostlist', 'checkpoint_time', 'num_threads', 'num_threads_mpi', 'num_threads_omp', 'num_threads_omp_pme', 'nb_gpu', 'gpu_id', 'gpu_tasks', 'dev']
         self.properties_grompp = {}
         self.properties_mdrun = {}
         if properties:

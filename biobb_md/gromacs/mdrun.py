@@ -36,7 +36,8 @@ class Mdrun(BiobbObject):
             * **num_threads_mpi** (*int*) - (0) [0~1000|1] Let GROMACS guess. The number of GROMACS MPI threads that are going to be used.
             * **num_threads_omp** (*int*) - (0) [0~1000|1] Let GROMACS guess. The number of GROMACS OPENMP threads that are going to be used.
             * **num_threads_omp_pme** (*int*) - (0) [0~1000|1] Let GROMACS guess. The number of GROMACS OPENMP_PME threads that are going to be used.
-            * **use_gpu** (*bool*) - (False) Use settings appropriate for GPU. Adds: -nb gpu -pme gpu
+            * **nb_gpu** (*bool*) - (False) Use settings appropriate for GPU. Adds: -nb gpu
+            * **pme_gpu** (*bool*) - (False) Use settings appropriate for GPU. Adds: -pme gpu
             * **gpu_id** (*str*) - (None) List of unique GPU device IDs available to use.
             * **gpu_tasks** (*str*) - (None) List of GPU device IDs, mapping each PP task on each node to a device.
             * **gmx_lib** (*str*) - (None) Path set GROMACS GMXLIB environment variable.
@@ -102,7 +103,8 @@ class Mdrun(BiobbObject):
         self.num_threads_omp = str(properties.get('num_threads_omp', ''))
         self.num_threads_omp_pme = str(properties.get('num_threads_omp_pme', ''))
         # gromacs gpus
-        self.use_gpu = properties.get('use_gpu', False)  # Adds: -nb gpu -pme gpu
+        self.nb_gpu = properties.get('nb_gpu', False)  # Adds: -nb gpu
+        self.pme_gpu = properties.get('pme_gpu', False)  # Adds: -pme gpu
         self.gpu_id = str(properties.get('gpu_id', ''))
         self.gpu_tasks = str(properties.get('gpu_tasks', ''))
         # gromacs
@@ -184,9 +186,12 @@ class Mdrun(BiobbObject):
             self.cmd.append('-ntomp_pme')
             self.cmd.append(self.num_threads_omp_pme)
         # GMX gpu properties
-        if self.use_gpu: 
-            fu.log('Adding GPU specific settings adds: -nb gpu -pme gpu', self.out_log)
-            self.cmd += ["-nb", "gpu", "-pme", "gpu"]
+        if self.nb_gpu:
+            fu.log('Adding GPU specific settings adds: -nb gpu', self.out_log)
+            self.cmd += ["-nb", "gpu"]
+        if self.pme_gpu:
+            fu.log('Adding GPU specific settings adds: -pme gpu', self.out_log)
+            self.cmd += ["-pme", "gpu"]
         if self.gpu_id:
             fu.log(f'List of unique GPU device IDs available to use: {self.gpu_id}', self.out_log)
             self.cmd.append('-gpu_id')
