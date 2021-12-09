@@ -29,6 +29,8 @@ class Genion(BiobbObject):
             * **replaced_group** (*str*) - ("SOL") Group of molecules that will be replaced by the solvent.
             * **neutral** (*bool*) - (False) Neutralize the charge of the system.
             * **concentration** (*float*) - (0.05) [0~10|0.01] Concentration of the ions in (mol/liter).
+            * **pname** (*str*) - ("NA") Name of the positive ion
+            * **nname** (*str*) - ("CL") Name of the negative ion
             * **seed** (*int*) - (1993) Seed for random number generator.
             * **gmx_lib** (*str*) - (None) Path set GROMACS GMXLIB environment variable.
             * **gmx_path** (*str*) - ("gmx") Path to the GROMACS executable binary.
@@ -46,7 +48,9 @@ class Genion(BiobbObject):
 
             from biobb_md.gromacs.genion import genion
             prop = { 'concentration': 0.05,
-                     'replaced_group': 'SOL'}
+                     'replaced_group': 'SOL',
+                     'pname': 'NA',
+                     'nname': 'CL'}
             genion(input_tpr_path='/path/to/myPortableBinaryRunInputFile.tpr',
                    output_gro_path='/path/to/newStructure.gro',
                    input_top_zip_path='/path/to/myTopology.zip',
@@ -80,6 +84,8 @@ class Genion(BiobbObject):
         # Properties specific for BB
         self.output_top_path = properties.get('output_top_path', 'gio.top')  # Not in documentation for clarity
         self.replaced_group = properties.get('replaced_group', 'SOL')
+        self.pname = properties.get('pname', 'NA')
+        self.nname = properties.get('nname', 'CL')
         self.neutral = properties.get('neutral', False)
         self.concentration = properties.get('concentration', 0.05)
         self.seed = properties.get('seed', 1993)
@@ -119,7 +125,9 @@ class Genion(BiobbObject):
                     self.gmx_path, 'genion',
                     '-s', self.stage_io_dict["in"]["input_tpr_path"],
                     '-o', self.stage_io_dict["out"]["output_gro_path"],
-                    '-p', top_file]
+                    '-p', top_file,
+                    '-pname', '\"'+self.pname+'\"',
+                    '-nname', '\"'+self.nname+'\"']
 
         if self.stage_io_dict["in"].get("input_ndx_path") and Path(
                 self.stage_io_dict["in"].get("input_ndx_path")).exists():
